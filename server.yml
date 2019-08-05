@@ -1,0 +1,10 @@
+---
+- name: Устанавливаем ELK stack
+  hosts:
+    - elk
+  gather_facts: no
+  remote_user: vagrant
+  become: true
+
+  roles:
+    - elkserver

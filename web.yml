@@ -1,0 +1,11 @@
+---
+- name: Устанавливаем NGINX filebeat
+  hosts:
+    - web
+  gather_facts: yes
+  remote_user: vagrant
+  become: true
+
+  roles:
+    - filebeat
+    - nginx
