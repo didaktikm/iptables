@@ -60,7 +60,8 @@ Vagrant.configure("2") do |config|
           box.vm.provision "shell", run: "always", inline: <<-SHELL
             sysctl net.ipv4.conf.all.forwarding=1
             iptables-restore < /vagrant/iptables.rules
-            # iptables -t nat -A POSTROUTING ! -d 192.168.0.0/16 -o eth0 -j MASQUERADE
+            sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+            service sshd restart
             ip route add 192.168.0.0/24 via 192.168.255.2
             SHELL
         when "inetRouter2"
@@ -79,6 +80,7 @@ Vagrant.configure("2") do |config|
             systemctl restart network
             ip route delete default 2>&1 >/dev/null || true
             ip route add default via 192.168.255.1
+            yum install -y nmap
             SHELL
         when "centralServer"
           box.vm.provision "shell", run: "always", inline: <<-SHELL
